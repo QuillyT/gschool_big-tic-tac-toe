@@ -80,10 +80,16 @@ class BoardView
   # end
 
   def draw_x(position)
-    game.fill(0,0,0)
-    game.line(position[0]-90, position[1]-90, position[0]+90,position[1]+90)
-    game.line(position[0]+90, position[1]-90, position[0]-90,position[1]+90)
+    process.stroke(50,0,0)
+    process.line(position[0]-foo, position[1]-foo, position[0]+foo, position[1]+foo)
+    process.line(position[0]+foo, position[1]-foo, position[0]-foo,position[1]+foo)
   end
+
+  def foo
+    length/6-length/10
+  end
+
+
 
   # def draw_o(position)
   #   game.fill(0,0,0)

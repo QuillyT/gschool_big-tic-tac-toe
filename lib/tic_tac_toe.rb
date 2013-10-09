@@ -33,7 +33,7 @@ class TicTacToe
   def mouse_pressed(x,y)
     position = convert_position(x,y)
     puts "position: #{position}"
-    #make_move(position)
+    make_move(position)
   end
 
   def convert_position(x,y)
@@ -104,15 +104,12 @@ class TicTacToe
     #   return
     # end
 
-    x_coord = coordinate_to_position.invert[move][0]
-    y_coord = coordinate_to_position.invert[move][1]
-
     if turn == player1
-      boardview.draw_X(x_coord,y_coord)
+      boardview.draw_x(coordinate_to_position.invert[move])
     else
-      boardview.draw_O(x_coord,y_coord)
+      boardview.draw_o(x_coord,y_coord)
     end
-    @board[coordinate_to_position[[x_coord, y_coord]]] = turn
+    #@board[coordinate_to_position[[x_coord, y_coord]]] = turn
 
   end
 

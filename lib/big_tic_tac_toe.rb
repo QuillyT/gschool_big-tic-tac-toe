@@ -6,8 +6,8 @@ require './lib/tic_tac_toe'
 
 class BigTicTacToe < Processing::App
 
-  attr_reader :player1, :player2, :turn, :board, :games
-
+  attr_reader :player1, :player2, :board, :games
+  attr_accessor :turn
   def setup
     smooth
     size length, length
@@ -47,15 +47,36 @@ class BigTicTacToe < Processing::App
   end
 
   def mouse_pressed
+    # win exists? || tie?
+      # setup_all_games
+    # valid game?
+    # if find_game(mouse_x, mouse_y).nil?
+    #   return
+    # else 
     find_game(mouse_x, mouse_y)
-    # determine which game it's at
+    @games.each do |game|
+      game.check_for_win
+    end
+    switch_turns
+    
+    # end
+    
+    # win_exists?
+      # change_background
+    # tie?
+      # 
+    # switch_turns
+  end
+
+  def mouse_released
+    # switch "highlight" to required game
   end
 
   def find_game(x,y)
     i = convert_x(x)
     j = convert_y(y)
     @games[coordinate_to_game[[i,j]]].mouse_pressed(x,y)
-    puts "game: #{coordinate_to_game[[i,j]]}"
+    # puts "game: #{coordinate_to_game[[i,j]]}"
   end
 
   def convert_x(x)
@@ -82,6 +103,14 @@ class BigTicTacToe < Processing::App
       coord = 2
     end
     return coord
+  end
+
+  def switch_turns
+    if turn == player1
+      @turn = player2
+    else
+      @turn = player1
+    end
   end
 
   def x0

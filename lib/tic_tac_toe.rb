@@ -32,8 +32,16 @@ class TicTacToe
 
   def mouse_pressed(x,y)
     position = convert_position(x,y)
-    puts "position: #{position}"
+    if position.nil?
+      big_game.switch_turns
+    end
+    # puts "position: #{position}"
     make_move(position)
+    if @board.winner?
+      boardview.winner(big_game.turn)
+      puts "win!"
+    end
+
   end
 
   def convert_position(x,y)
@@ -99,18 +107,26 @@ class TicTacToe
   end
 
   def make_move(move)
+    unless @board.valid_move?(move)
+      return
+    end
 
-    # unless valid_move?(coordinate_hash[[x_coord, y_coord]])
-    #   return
-    # end
-
-    if turn == player1
+    if big_game.turn == player1
       boardview.draw_x(coordinate_to_position.invert[move])
     else
-      boardview.draw_o(x_coord,y_coord)
+      boardview.draw_o(coordinate_to_position.invert[move])
     end
-    #@board[coordinate_to_position[[x_coord, y_coord]]] = turn
 
+    
+    #@board[coordinate_to_position[[x_coord, y_coord]]] = turn
+    # @big_game.switch_turns
+    @board.grid[move] = big_game.turn
+    puts "#{game_number}#{@board.grid}"
+  end
+
+  def check_for_win
+    if @board.winner?
+    end
   end
 
 

@@ -20,8 +20,18 @@ class BoardView
     draw_lines
   end
 
-  def top_left
-
+  def winner(turn)
+    if turn == game.player1
+      process.fill(180,180,180)
+      process.line(x0,y3,x3,y0)
+      process.line(x0,y0,x3,y3)
+    else
+      process.fill(180,180,180)
+      process.ellipse((x0+x3)/2,(y0+y3)/2,length,length)
+      # process.ellipse(310,310,580,580)
+      draw_lines
+      # update_board
+    end
   end
 
   def draw_lines
@@ -80,7 +90,10 @@ class BoardView
   # end
 
   def draw_x(position)
-    process.stroke(50,0,0)
+    if position.nil?
+      return
+    end
+    process.stroke(120,0,0)
     process.line(position[0]-foo, position[1]-foo, position[0]+foo, position[1]+foo)
     process.line(position[0]+foo, position[1]-foo, position[0]-foo,position[1]+foo)
   end
@@ -89,14 +102,23 @@ class BoardView
     length/6-length/10
   end
 
+  def bar
+    length/3-2*length/10
+  end
 
 
-  # def draw_o(position)
-  #   game.fill(0,0,0)
-  #   game.ellipse(position[0],position[1],180,180)
-  #   game.fill(255,255,255)
-  #   game.ellipse(position[0], position[1], 175, 175)
-  # end
+
+  def draw_o(position)
+    if position.nil?
+      return
+    end
+    process.fill(180,180,180)
+    process.ellipse(position[0],position[1],bar,bar)
+    process.stroke(0,80,0)
+    process.ellipse(position[0],position[1],bar,bar)
+    # process.stroke(180,180,180)
+    # process.ellipse(position[0], position[1], bar-length/10, bar-length/10)
+  end
 
   # def winner(turn)
   #   game.background(255,255,255)

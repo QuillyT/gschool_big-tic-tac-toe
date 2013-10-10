@@ -27,7 +27,7 @@ class Board
 
   def winner?
     winning_spots.find do |set|
-      set.all? { |position| grid[position]==player1 } || 
+      set.all? { |position| grid[position]==player1 } ||
       set.all? { |position| grid[position]==player2 }
     end
   end
@@ -53,7 +53,7 @@ class Board
 
   # def winner?
   #   winning_spots.find do |set|
-  #     set.all? { |position| grid[position]==player1 } || 
+  #     set.all? { |position| grid[position]==player1 } ||
   #     set.all? { |position| grid[position]==player2 }
   #   end
   # end

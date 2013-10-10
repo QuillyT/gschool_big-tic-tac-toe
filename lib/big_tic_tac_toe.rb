@@ -62,6 +62,9 @@ class BigTicTacToe < Processing::App
         if game.winner?
           @board.add_move(game.game_number, turn)
         end
+        if game.tie?
+          @board.add_move(game.game_number, 'tied')
+        end
         if winner?
           winner(turn)
         end

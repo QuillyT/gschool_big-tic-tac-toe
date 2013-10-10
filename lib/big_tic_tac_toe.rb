@@ -12,10 +12,11 @@ class BigTicTacToe < Processing::App
     smooth
     size length, length
     stroke_weight 5
-    @player1 = Player.new
-    @player2 = Player.new
+    @player1 = Player.new("Player 1 - 'X'")
+    @player2 = Player.new("Player 2 - 'O'")
     setup_game
-    @previous_move = nil 
+    @previous_move = nil
+    @up_next = player2
   end
 
   def clear_screen
@@ -33,6 +34,7 @@ class BigTicTacToe < Processing::App
     @games = Array.new(9)
     @games.each_index{ |index| @games[index] = TicTacToe.new(self,index) }
     draw_board
+    puts "turn: #{turn.name} \nnext move: any"
   end
 
   def draw_board
@@ -57,13 +59,13 @@ class BigTicTacToe < Processing::App
 
     if valid_game?(game)
       @previous_move = game.mouse_pressed(mouse_x, mouse_y)
-      puts "\n\nturn: #{turn.object_id}"
+      puts "\n\nturn: #{up_next.name}"
       if board.grid[@previous_move].nil?
-        puts "next_move: #{@previous_move}"
+        puts "next move: #{@previous_move}"
       else
-        puts "next_move: any"
+        puts "next move: any"
       end
-       
+
 
 
       if previous_move
@@ -97,6 +99,14 @@ class BigTicTacToe < Processing::App
       true
     end
 
+  end
+
+  def up_next
+    if turn == player1
+      @up_next = player2
+    else
+      @up_next = player1
+    end
   end
 
   def tied_game

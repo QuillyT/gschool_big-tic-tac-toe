@@ -22,11 +22,11 @@ class TicTacToe
     [ [0,0],
       [length, 0],
       [length*2, 0],
-      [0, length], 
-      [length, length], 
-      [length*2, length], 
-      [0, length*2], 
-      [length, length*2], 
+      [0, length],
+      [length, length],
+      [length*2, length],
+      [0, length*2],
+      [length, length*2],
       [length*2, length*2]  ]
   end
 

@@ -6,7 +6,7 @@ require './lib/tic_tac_toe'
 
 class BigTicTacToe < Processing::App
 
-  attr_reader :player1, :player2, :board, :games
+  attr_reader :player1, :player2, :board, :games, :previous_move
   attr_accessor :turn
   def setup
     smooth
@@ -15,6 +15,7 @@ class BigTicTacToe < Processing::App
     @player1 = Player.new
     @player2 = Player.new
     setup_game
+    @previous_move = nil 
   end
 
   def clear_screen
@@ -51,20 +52,49 @@ class BigTicTacToe < Processing::App
       setup_game
       return
     end
+
     game = find_game(mouse_x, mouse_y)
 
-    valid_move = game.mouse_pressed(mouse_x, mouse_y)
-    if valid_move
-      if game.winner?
-        @board.add_move(game.game_number, turn)
+    if valid_game?(game)
+      @previous_move = game.mouse_pressed(mouse_x, mouse_y)
+      puts "\n\nturn: #{turn.object_id}"
+      if board.grid[@previous_move].nil?
+        puts "next_move: #{@previous_move}"
+      else
+        puts "next_move: any"
       end
-      if winner?
-        winner(turn)
+       
+
+
+      if previous_move
+        if game.winner?
+          @board.add_move(game.game_number, turn)
+        end
+        if winner?
+          winner(turn)
+        end
+        if tie?
+          tied_game
+        end
+        switch_turns
       end
-      if tie?
-        tied_game
+    end
+  end
+
+  def valid_game?(game)
+
+    if @previous_move.nil?
+      #first move
+      return true
+    end
+
+    if board.grid[@previous_move].nil?
+      if @previous_move == game.game_number
+        #correct game for previous move
+        return true
       end
-      switch_turns
+    else
+      true
     end
 
   end

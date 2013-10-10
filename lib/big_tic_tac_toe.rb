@@ -11,8 +11,9 @@ class BigTicTacToe < Processing::App
   def setup
     smooth
     size length, length
-    clear_screen
     stroke_weight 5
+    @player1 = Player.new
+    @player2 = Player.new
     setup_game
   end
 
@@ -25,8 +26,7 @@ class BigTicTacToe < Processing::App
   end
 
   def setup_game
-    @player1 = Player.new
-    @player2 = Player.new
+    clear_screen
     @turn = player1
     @board = Board.new(player1,player2)
     @games = Array.new(9)
@@ -47,25 +47,61 @@ class BigTicTacToe < Processing::App
   end
 
   def mouse_pressed
-    # win exists? || tie?
-      # setup_all_games
-    # valid game?
-    # if find_game(mouse_x, mouse_y).nil?
-    #   return
-    # else 
-    find_game(mouse_x, mouse_y)
-    @games.each do |game|
-      game.check_for_win
+    if winner? || tie?
+      setup_game
+      return
     end
-    switch_turns
-    
-    # end
-    
-    # win_exists?
-      # change_background
-    # tie?
-      # 
-    # switch_turns
+    game = find_game(mouse_x, mouse_y)
+
+    valid_move = game.mouse_pressed(mouse_x, mouse_y)
+    if valid_move
+      if game.winner?
+        @board.add_move(game.game_number, turn)
+      end
+      if winner?
+        winner(turn)
+      end
+      if tie?
+        tied_game
+      end
+      switch_turns
+    end
+
+  end
+
+  def tied_game
+    stroke_weight 20
+    turn == player1
+    stroke(100,0,0)
+    line(x0+shift,y3-shift,x3-shift,y0+shift)
+    line(x0+shift,y0+shift,x3-shift,y3-shift)
+    stroke(0,100,0)
+    no_fill()
+    arc((x0+x3)/2,(y0+y3)/2,length-shift,length-shift,0,2*Math::PI)
+    stroke_weight 5
+  end
+
+  def tie?
+    @board.tied?
+  end
+
+  def winner(turn)
+    stroke_weight 20
+    if turn == player1
+      stroke(100,0,0)
+      line(x0+shift,y3-shift,x3-shift,y0+shift)
+      line(x0+shift,y0+shift,x3-shift,y3-shift)
+    else
+      stroke(0,100,0)
+      no_fill()
+      arc((x0+x3)/2,(y0+y3)/2,length-shift,length-shift,0,2*Math::PI)
+    end
+    stroke_weight 5
+  end
+
+
+  def winner?
+    @board.winner?
   end
 
   def mouse_released
@@ -75,8 +111,7 @@ class BigTicTacToe < Processing::App
   def find_game(x,y)
     i = convert_x(x)
     j = convert_y(y)
-    @games[coordinate_to_game[[i,j]]].mouse_pressed(x,y)
-    # puts "game: #{coordinate_to_game[[i,j]]}"
+    @games[coordinate_to_game[[i,j]]]
   end
 
   def convert_x(x)
@@ -113,20 +148,24 @@ class BigTicTacToe < Processing::App
     end
   end
 
+  def shift
+    length/30
+  end
+
   def x0
     0
   end
 
   def x1
-    240
+    x0+(length/3)
   end
 
   def x2
-    480
+    x0+(2*length/3)
   end
 
   def x3
-    720
+    x0+length
   end
 
   def y0
@@ -134,15 +173,15 @@ class BigTicTacToe < Processing::App
   end
 
   def y1
-    240
+    y0+(length/3)
   end
 
   def y2
-    480
+    y0+(2*length/3)
   end
 
   def y3
-    720
+    y0+length
   end
 
   def coordinate_to_game

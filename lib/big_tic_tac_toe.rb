@@ -56,18 +56,8 @@ class BigTicTacToe < Processing::App
     end
 
     game = find_game(mouse_x, mouse_y)
-
     if valid_game?(game)
       @previous_move = game.mouse_pressed(mouse_x, mouse_y)
-      puts "\n\nturn: #{up_next.name}"
-      if board.grid[@previous_move].nil?
-        puts "next move: #{@previous_move}"
-      else
-        puts "next move: any"
-      end
-
-
-
       if previous_move
         if game.winner?
           @board.add_move(game.game_number, turn)
@@ -80,25 +70,28 @@ class BigTicTacToe < Processing::App
         end
         switch_turns
       end
+    else
+      return
+    end
+    puts "\n\nturn: #{turn.name}"
+    if @board.valid_move?(@previous_move)
+      puts "next move: #{@previous_move}"
+    else
+      puts "next move: any"
     end
   end
 
   def valid_game?(game)
 
     if @previous_move.nil?
-      #first move
       return true
     end
 
     if board.grid[@previous_move].nil?
-      if @previous_move == game.game_number
-        #correct game for previous move
-        return true
-      end
+      return @previous_move == game.game_number
     else
-      true
+      return @previous_move != game.game_number
     end
-
   end
 
   def up_next

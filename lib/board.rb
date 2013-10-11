@@ -48,7 +48,9 @@ class Board
   end
 
   def tied?
-    grid.all?
+    unless winner?
+      grid.all?
+    end
   end
 
   # def winner?

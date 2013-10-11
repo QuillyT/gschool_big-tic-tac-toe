@@ -15,8 +15,6 @@ class BigTicTacToe < Processing::App
     @player1 = Player.new("Player 1 - 'X'")
     @player2 = Player.new("Player 2 - 'O'")
     setup_game
-    @previous_move = nil
-    @up_next = player2
   end
 
   def clear_screen
@@ -30,11 +28,12 @@ class BigTicTacToe < Processing::App
   def setup_game
     clear_screen
     @turn = player1
+    @previous_move = nil
     @board = Board.new(player1,player2)
     @games = Array.new(9)
     @games.each_index{ |index| @games[index] = TicTacToe.new(self,index) }
     draw_board
-    puts "turn: #{turn.name} \nnext move: any"
+    puts "NEW GAME\nturn: #{turn.name} \nnext move: any"
   end
 
   def draw_board
@@ -76,6 +75,7 @@ class BigTicTacToe < Processing::App
     else
       return
     end
+
     puts "\n\nturn: #{turn.name}"
     if @board.valid_move?(@previous_move)
       puts "next move: #{@previous_move}"
@@ -94,14 +94,6 @@ class BigTicTacToe < Processing::App
       return @previous_move == game.game_number
     else
       return @previous_move != game.game_number
-    end
-  end
-
-  def up_next
-    if turn == player1
-      @up_next = player2
-    else
-      @up_next = player1
     end
   end
 

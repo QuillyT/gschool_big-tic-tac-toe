@@ -1,17 +1,28 @@
-gem 'minitest'
+require 'minitest'
 require 'minitest/autorun'
 require 'minitest/pride'
-require './lib/player.rb'
+require './lib/player'
 
 class PlayerTest < Minitest::Test
-   def test_it_exists
-     p = Player.new
-     assert_kind_of Player, p
-   end
 
-   def test_it_is_different?
-     p1 = Player.new
-     p2 = Player.new
-     refute_equal p1.object_id, p2.object_id
-   end
+  def test_it_has_a_name
+    skip
+  end
+
+  def test_it_has_an_id
+    skip
+  end
+
+  def test_it_has_number_of_wins
+    skip
+  end
+
+  def test_it_has_a_total_number_of_games_played
+    skip
+  end
+
+  def test_it_has_all_previous_games
+    skip
+  end
+
 end
